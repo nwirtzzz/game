@@ -1,0 +1,14 @@
+body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: black; /* Ensures the entire page is black */
+}
+
+#gameCanvas {
+  display: block;
+  background-color: black; /* Ensures the canvas is black */
+  border: none;
+}
