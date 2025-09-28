@@ -169,6 +169,44 @@ function drawCannons() {
   });
 }
 
+// Static laser (middle of the right side)
+const staticLaser = {
+  x: boxX + boxSize - 30, // Position at the right edge of the box
+  y: boxY + boxSize / 2 - 5, // Centered vertically
+  width: 100, // Same length as other lasers
+  height: 10, // Laser thickness
+  active: false, // Laser starts inactive
+};
+
+// Function to draw the static laser
+function drawStaticLaser() {
+  if (staticLaser.active) {
+    ctx.fillStyle = 'red';
+    ctx.fillRect(staticLaser.x, staticLaser.y, staticLaser.width, staticLaser.height);
+  }
+}
+
+// Function to check when the static laser should appear/disappear
+function updateStaticLaserState() {
+  // Only activate after reaching 1000 points
+  if (score >= 10) { 
+    staticLaser.active = Math.floor(score / 10) % 2 === 1;
+  } else {
+    staticLaser.active = false; // Ensure it's inactive before 1000 points
+  }
+}
+
+// Check collision with the static laser
+function checkStaticLaserCollision() {
+  if (staticLaser.active && 
+      playerX < staticLaser.x + staticLaser.width &&
+      playerX + playerSize > staticLaser.x &&
+      playerY < staticLaser.y + staticLaser.height &&
+      playerY + playerSize > staticLaser.y) {
+    gameOver = true;
+  }
+}
+
 // Create a laser
 function shootLaser(cannon) {
   stretchCannon(cannon); // Stretch the cannon before firing
@@ -281,6 +319,15 @@ function draw() {
   lasers.forEach((laser) => {
     ctx.fillRect(laser.x, laser.y, laser.width, laser.height);
   });
+
+  // Draw the static laser
+  drawStaticLaser();
+
+ // Check for collision with static laser
+ checkStaticLaserCollision();
+
+ // Update static laser state
+ updateStaticLaserState();
 
   // Draw the score
   ctx.fillStyle = 'white';
